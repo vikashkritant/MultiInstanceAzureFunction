@@ -1,2 +1,2 @@
 # MultiInstanceAzureFunction
-Multi Instance Azure function
+Multi Instance Azure function for testing scale
