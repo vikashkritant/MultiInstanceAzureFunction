@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiInstanceAzureFunction", "MultiInstanceAzureFunction\MultiInstanceAzureFunction.csproj", "{B968CA53-563C-4690-911F-FE155B4EDD02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageSender", "MessageSender\MessageSender.csproj", "{5CD89AD0-AD0D-417E-B014-E07C27CB40BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B968CA53-563C-4690-911F-FE155B4EDD02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B968CA53-563C-4690-911F-FE155B4EDD02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B968CA53-563C-4690-911F-FE155B4EDD02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B968CA53-563C-4690-911F-FE155B4EDD02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CD89AD0-AD0D-417E-B014-E07C27CB40BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CD89AD0-AD0D-417E-B014-E07C27CB40BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CD89AD0-AD0D-417E-B014-E07C27CB40BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CD89AD0-AD0D-417E-B014-E07C27CB40BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C14FA065-8E84-4E7A-9192-57B4013743FB}
+	EndGlobalSection
+EndGlobal
