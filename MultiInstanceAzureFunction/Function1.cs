@@ -1,6 +1,6 @@
 using System;
+using System.Threading;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
 namespace MultiInstanceAzureFunction
@@ -10,8 +10,9 @@ namespace MultiInstanceAzureFunction
         [FunctionName("ProcessQueueMessage")]
         public static void Run([ServiceBusTrigger("myqueue",Connection = "ServiceBusConnectionString")]string myQueueItem, ILogger log)
         {
-            string instanceId = Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID");
-            log.LogInformation($"Function-{instanceId} Received message with id: {myQueueItem}");
+            log.LogInformation($"Function- started");
+            Thread.Sleep(10000);
+            log.LogInformation($"Function- Received message with id: {myQueueItem}");
         }
     }
 }
