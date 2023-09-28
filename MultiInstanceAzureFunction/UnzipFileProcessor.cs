@@ -31,7 +31,7 @@ namespace MultiInstanceAzureFunction
             blobServiceClient = new BlobServiceClient(storageConnectionString);
 
             // Get and create the container for the blobs
-            BlobContainerClient _destinationContainer = blobServiceClient.GetBlobContainerClient("botoutput");
+            //BlobContainerClient _destinationContainer = blobServiceClient.GetBlobContainerClient("botoutput");
         }
 
         //public async Task ProcessFile(Stream blobStream)
@@ -86,7 +86,7 @@ namespace MultiInstanceAzureFunction
             try
             {
                 List<MemoryStream> memoryStreams = new List<MemoryStream>();
-                await foreach (BlobItem blobitem in inputContainerClient.GetBlobsAsync())
+                foreach (BlobItem blobitem in inputContainerClient.GetBlobs())
                 {
                     //using (MemoryStream memoryStream = new MemoryStream())
                     //{
@@ -121,7 +121,7 @@ namespace MultiInstanceAzureFunction
             }
             catch (Exception ex)
             {
-
+                logger.LogError($"Exceptin occured and exception is: {ex.Message}");
             }
 
         }
