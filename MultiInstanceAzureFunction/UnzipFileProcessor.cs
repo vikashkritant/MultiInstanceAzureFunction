@@ -86,6 +86,7 @@ namespace MultiInstanceAzureFunction
             catch (Exception ex)
             {
                 logger.LogError($"Exceptin occured and exception is: {ex.Message}");
+                throw;
             }
 
         }
