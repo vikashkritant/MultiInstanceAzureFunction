@@ -32,45 +32,9 @@ namespace MultiInstanceAzureFunction
 
             // Get and create the container for the blobs
             //BlobContainerClient _destinationContainer = blobServiceClient.GetBlobContainerClient("botoutput");
-        }
+        }        
 
-        //public async Task ProcessFile(Stream blobStream)
-        //{
-        //    if (ZipArchive.IsZipFile(blobStream))
-        //    {
-        //        var zipReaderOptions = new ReaderOptions()
-        //        {
-        //            ArchiveEncoding = new ArchiveEncoding(Encoding.UTF8, Encoding.UTF8),
-        //            LookForHeader = true
-        //        };
-
-        //        _logger.LogInformation("Blob is a zip file; beginning extraction....");
-        //        blobStream.Position = 0;
-
-        //        using var reader = ZipArchive.Open(blobStream, zipReaderOptions);
-
-        //        await ExtractArchiveFiles(reader.Entries);
-        //    }
-        //}
-
-        //protected async Task ExtractArchiveFiles(IEnumerable<IArchiveEntry> archiveEntries)
-        //{
-        //    foreach (var archiveEntry in archiveEntries.Where(entry => !entry.IsDirectory))
-        //    {
-        //        _logger.LogInformation($"Now processing {archiveEntry.Key}");
-
-        //        NameValidator.ValidateBlobName(archiveEntry.Key);
-
-        //        var blockBlob = _destinationContainer.GetBlobClient(archiveEntry.Key);
-        //        await using var fileStream = archiveEntry.OpenEntryStream();
-        //        await blockBlob.UploadAsync(fileStream);
-
-        //        _logger.LogInformation(
-        //            $"{archiveEntry.Key} processed successfully and moved to destination container");
-        //    }
-        //}
-
-        public async void Process()
+        public void Process()
         {
             //CloudStorageAccount storageAccunt = CloudStorageAccount.Parse(storageConnectionString);
             // Create BlobServiceClient from the connection string.
@@ -108,7 +72,7 @@ namespace MultiInstanceAzureFunction
                 {
                     foreach (SevenZipArchiveEntry entry in archive.Entries.Where(entry => !entry.IsDirectory))
                     {
-                        Console.WriteLine($"Now processing {entry.Key}");
+                        logger.LogInformation($"Now processing {entry.Key}");
                         BlobClient outputBlobClient = outputContainerClient.GetBlobClient(entry.Key);
                         using (var fileStream = entry.OpenEntryStream())
                         {
