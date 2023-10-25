@@ -104,7 +104,7 @@ namespace MultiInstanceAzureFunction
                 if (shareClient.Exists())
                 {
                     var root= shareClient.GetRootDirectoryClient();
-                    root.
+                    
                     List<MemoryStream> memoryStreams = new List<MemoryStream>();
                     foreach (BlobItem blobitem in inputContainerClient.GetBlobs())
                     {
