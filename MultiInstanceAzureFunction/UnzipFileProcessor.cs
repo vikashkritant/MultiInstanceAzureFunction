@@ -136,7 +136,8 @@ namespace MultiInstanceAzureFunction
             var fi = di.GetFiles();
             using (SevenZipArchive archive = SevenZipArchive.Open(fi))
             {                
-                archive.ExtractAllEntries();
+                var reader=archive.ExtractAllEntries();
+                reader.WriteAllToDirectory(@"/fx-files/output");
             }
             logger.LogInformation($"ProcessFileShare Ended");
         }
