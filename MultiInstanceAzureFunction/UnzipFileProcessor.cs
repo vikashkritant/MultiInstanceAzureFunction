@@ -35,7 +35,7 @@ namespace MultiInstanceAzureFunction
             //BlobContainerClient _destinationContainer = blobServiceClient.GetBlobContainerClient("botoutput");
         }        
 
-        public void Process()
+        public void ProcessInMemory()
         {
             //CloudStorageAccount storageAccunt = CloudStorageAccount.Parse(storageConnectionString);
             // Create BlobServiceClient from the connection string.
@@ -92,7 +92,7 @@ namespace MultiInstanceAzureFunction
 
         }
 
-        public void ProcessFileShare()
+        public void ProcessInBlob()
         {
             ShareClient shareClient= new ShareClient(storageConnectionString,"zipfileshare");
             // Get and create the container for the blobs
@@ -127,6 +127,18 @@ namespace MultiInstanceAzureFunction
                 throw;
             }
 
+        }
+
+        public void ProcessFileShare()
+        {
+            logger.LogInformation($"ProcessFileShare Started");
+            var di = new DirectoryInfo(@"/fx-files/input");
+            var fi = di.GetFiles();
+            using (SevenZipArchive archive = SevenZipArchive.Open(fi))
+            {                
+                archive.ExtractAllEntries();
+            }
+            logger.LogInformation($"ProcessFileShare Ended");
         }
     }
 }

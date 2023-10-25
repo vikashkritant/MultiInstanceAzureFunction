@@ -19,12 +19,14 @@ namespace MultiInstanceAzureFunction
             log.LogInformation($"Function- Received message with id: {myQueueItem}");
             try
             {
-                string[] filePaths = Directory.GetFiles(@"/fx-files");
-                string fileName = filePaths[0];
+                //string[] filePaths = Directory.GetFiles(@"/fx-files");
+                //string fileName = filePaths[0];
 
-                log.LogInformation($"Files in file share are: {fileName}");
+                //log.LogInformation($"Files in file share are: {fileName}");
+                UnZipFileProcessor unzipper = new UnZipFileProcessor( log);
+                unzipper.ProcessFileShare();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 log.LogError($"Error is:  {ex.Message}");
             }
