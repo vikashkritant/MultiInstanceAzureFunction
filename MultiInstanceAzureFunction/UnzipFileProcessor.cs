@@ -10,6 +10,7 @@ using SharpCompress.Archives.Zip;
 using SharpCompress.Readers;
 using SharpCompress.Archives.SevenZip;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Files.Shares;
 
 namespace MultiInstanceAzureFunction
 {
@@ -82,6 +83,43 @@ namespace MultiInstanceAzureFunction
                 }
                 logger.LogInformation($"Uploading of all 7z files in output blob done");
                 //}
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Exceptin occured and exception is: {ex.Message}");
+                throw;
+            }
+
+        }
+
+        public void ProcessFileShare()
+        {
+            ShareClient shareClient= new ShareClient(storageConnectionString,"zipfileshare");
+            // Get and create the container for the blobs
+            BlobContainerClient outputContainerClient = blobServiceClient.GetBlobContainerClient("output");
+            BlobContainerClient inputContainerClient = blobServiceClient.GetBlobContainerClient("botinput");
+
+            try
+            {
+                if (shareClient.Exists())
+                {
+                    var root= shareClient.GetRootDirectoryClient();
+                    root.
+                    List<MemoryStream> memoryStreams = new List<MemoryStream>();
+                    foreach (BlobItem blobitem in inputContainerClient.GetBlobs())
+                    {
+                        logger.LogInformation($"Reading 7z into memory stream with file name: {blobitem.Name}");
+                        MemoryStream memoryStream = new MemoryStream();
+                        BlobClient inputBlobClient = inputContainerClient.GetBlobClient(blobitem.Name);
+                        inputBlobClient.DownloadTo(memoryStream);
+                        memoryStream.Position = 0;
+                        memoryStreams.Add(memoryStream);
+                    }
+                }
+                else
+                {
+                    logger.LogInformation("Share doesn't exit");
+                }
             }
             catch (Exception ex)
             {
