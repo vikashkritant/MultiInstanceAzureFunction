@@ -11,8 +11,7 @@ namespace MultiInstanceAzureFunction
         [FunctionName("ProcessQueueMessage")]
         public static void Run([ServiceBusTrigger("zipqueue",Connection = "ServiceBusConnectionString")]string myQueueItem, ILogger log)
         {
-            log.LogInformation($"Function- started");
-            
+            log.LogInformation($"Function- started");            
             //UnZipFileProcessor unzipper = new UnZipFileProcessor( log);
             //unzipper.Process();
             
