@@ -89,7 +89,6 @@ namespace MultiInstanceAzureFunction
                 logger.LogError($"Exceptin occured and exception is: {ex.Message}");
                 throw;
             }
-
         }
 
         public void ProcessInBlob()
