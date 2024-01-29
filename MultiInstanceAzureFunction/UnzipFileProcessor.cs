@@ -28,7 +28,7 @@ namespace MultiInstanceAzureFunction
             //_secretSettings = secretSettings;
             //_destinationContainer = "botoutput";
             logger = log;
-            storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=vikashrg8582;AccountKey=BKvZJvqSx0IlArJ4cUhFb+al1RBfYotYJJ+RgGHjvRF9sIVOpOEz4RInsFroMBvTK5ZYJ16WaTL1+AStEqYsyQ==;EndpointSuffix=core.windows.net";
+            storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=vikashstg;AccountKey=/Gtd9xOKvRIb0zc/BmkSijYRoZcze5IS8qzEuFr/10r8Coub9eiVAb2Z+d1kuPTE8zpoTgL50/8E+AStKybpeA==;EndpointSuffix=core.windows.net";
             blobServiceClient = new BlobServiceClient(storageConnectionString);
 
             // Get and create the container for the blobs
@@ -132,12 +132,12 @@ namespace MultiInstanceAzureFunction
         public void ProcessFileShare()
         {
             logger.LogInformation($"ProcessFileShare Started");
-            var di = new DirectoryInfo(@"/vikash-files/input");
+            var di = new DirectoryInfo(@"/data/input");
             var fi = di.GetFiles();
             using (SevenZipArchive archive = SevenZipArchive.Open(fi))
             {                
                 var reader=archive.ExtractAllEntries();
-                reader.WriteAllToDirectory(@"/vikash-files/output");
+                reader.WriteAllToDirectory(@"/data/output");
             }
             logger.LogInformation($"ProcessFileShare Ended");
         }
