@@ -159,7 +159,10 @@ namespace MultiInstanceAzureFunction
             logger.LogInformation($"Directory Cleaning Started");
             var di = new DirectoryInfo(@"/data/output/BlobData");
             //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv\BlobData");
-            di.Delete(true);
+            if (di.Exists)
+            {
+                di.Delete(true);
+            }
             //logger.LogInformation($"Total files t be deleted: " +fi.Count());
             //foreach (FileInfo file in fi)
             //{
