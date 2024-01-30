@@ -138,30 +138,43 @@ namespace MultiInstanceAzureFunction
                 Overwrite = true
             };
 
-            if (result)
-            {
-                logger.LogInformation($"ProcessFileShare Started");
-                var di = new DirectoryInfo(@"/data/input");
-                //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
-                var fi = di.GetFiles();
-                using (SevenZipArchive archive = SevenZipArchive.Open(fi))
-                {
-                    var reader = archive.ExtractAllEntries();
-                    reader.WriteAllToDirectory(@"/data/output", option);
-                    //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
-                }
-            }
-            logger.LogInformation($"ProcessFileShare Ended");
+            //if (result)
+            //{
+            //    logger.LogInformation($"ProcessFileShare Started");
+            //    var di = new DirectoryInfo(@"/data/input");
+            //    //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
+            //    var fi = di.GetFiles();
+            //    using (SevenZipArchive archive = SevenZipArchive.Open(fi))
+            //    {
+            //        var reader = archive.ExtractAllEntries();
+            //        reader.WriteAllToDirectory(@"/data/output", option);
+            //        //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
+            //    }
+            //}
+            //logger.LogInformation($"ProcessFileShare Ended");
         }
 
         private bool CleanDirectory()
         {
             logger.LogInformation($"Directory Cleaning Started");
-            var di = new DirectoryInfo(@"/data/output/BlobData");
+            var outputDirectory = new DirectoryInfo(@"/data/output/BlobData");
             //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv\BlobData");
-            if (di.Exists)
+            if (outputDirectory.Exists)
             {
-                di.Delete(true);
+                var di = outputDirectory.GetDirectories();
+                foreach(var directory in di)
+                {
+                    var fi = directory.GetFiles();
+                    foreach (FileInfo file in fi)
+                    {
+                        if (file.Exists)
+                        {                            
+                            file.Delete();
+                        }
+                    }
+                    directory.Delete();
+                }
+                outputDirectory.Delete();
             }
             //logger.LogInformation($"Total files t be deleted: " +fi.Count());
             //foreach (FileInfo file in fi)
