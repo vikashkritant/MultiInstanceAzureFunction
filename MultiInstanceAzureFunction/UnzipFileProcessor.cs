@@ -130,8 +130,7 @@ namespace MultiInstanceAzureFunction
         }
 
         public void ProcessFileShare()
-        {
-            logger.LogInformation($"ProcessFileShare Started");
+        {            
             bool result = CleanDirectory();
             var option = new ExtractionOptions
             {
@@ -141,6 +140,7 @@ namespace MultiInstanceAzureFunction
 
             if (result)
             {
+                logger.LogInformation($"ProcessFileShare Started");
                 var di = new DirectoryInfo(@"/data/input");
                 //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 var fi = di.GetFiles();
