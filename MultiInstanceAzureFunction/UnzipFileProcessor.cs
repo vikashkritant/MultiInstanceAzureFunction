@@ -149,7 +149,15 @@ namespace MultiInstanceAzureFunction
             var fi = di.GetFiles();
             foreach(FileInfo file in fi)
             {
-                file.Delete();
+                if (file.Exists)
+                {
+                    logger.LogInformation($"deleting file: " + file.Name);
+                    file.Delete();
+                }
+                else
+                {
+                    logger.LogInformation($"File not found: " + file.Name);
+                }
             }
             logger.LogInformation($"ProcessFileShare Ended");
             return true;
