@@ -131,13 +131,16 @@ namespace MultiInstanceAzureFunction
         public void ProcessFileShare()
         {
             logger.LogInformation($"ProcessFileShare Started");
-            CleanDirectory();
-            var di = new DirectoryInfo(@"/data/input");
-            var fi = di.GetFiles();
-            using (SevenZipArchive archive = SevenZipArchive.Open(fi))
-            {                
-                var reader=archive.ExtractAllEntries();
-                reader.WriteAllToDirectory(@"/data/output");
+            bool result=CleanDirectory();
+            if (result)
+            {
+                var di = new DirectoryInfo(@"/data/input");
+                var fi = di.GetFiles();
+                using (SevenZipArchive archive = SevenZipArchive.Open(fi))
+                {
+                    var reader = archive.ExtractAllEntries();
+                    reader.WriteAllToDirectory(@"/data/output");
+                }
             }
             logger.LogInformation($"ProcessFileShare Ended");
         }
@@ -147,7 +150,8 @@ namespace MultiInstanceAzureFunction
             logger.LogInformation($"Directory Cleaning Started");
             var di = new DirectoryInfo(@"/data/output");
             var fi = di.GetFiles();
-            foreach(FileInfo file in fi)
+            logger.LogInformation($"Total files t be deleted: " +fi.Count());
+            foreach (FileInfo file in fi)
             {
                 if (file.Exists)
                 {
