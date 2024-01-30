@@ -147,7 +147,7 @@ namespace MultiInstanceAzureFunction
                 using (SevenZipArchive archive = SevenZipArchive.Open(fi))
                 {
                     var reader = archive.ExtractAllEntries();
-                    reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
+                    reader.WriteAllToDirectory(@"/data/output", option);
                     //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
                 }
             }
