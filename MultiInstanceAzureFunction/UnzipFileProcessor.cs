@@ -11,6 +11,7 @@ using SharpCompress.Readers;
 using SharpCompress.Archives.SevenZip;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Files.Shares;
+using SharpCompress.Common;
 
 namespace MultiInstanceAzureFunction
 {
@@ -131,15 +132,23 @@ namespace MultiInstanceAzureFunction
         public void ProcessFileShare()
         {
             logger.LogInformation($"ProcessFileShare Started");
-            bool result=CleanDirectory();
+            bool result = CleanDirectory();
+            var option = new ExtractionOptions
+            {
+                ExtractFullPath = true,
+                Overwrite = true
+            };
+
             if (result)
             {
                 var di = new DirectoryInfo(@"/data/input");
+                //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 var fi = di.GetFiles();
                 using (SevenZipArchive archive = SevenZipArchive.Open(fi))
                 {
                     var reader = archive.ExtractAllEntries();
-                    reader.WriteAllToDirectory(@"/data/output");
+                    reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
+                    //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
                 }
             }
             logger.LogInformation($"ProcessFileShare Ended");
@@ -148,22 +157,23 @@ namespace MultiInstanceAzureFunction
         private bool CleanDirectory()
         {
             logger.LogInformation($"Directory Cleaning Started");
-            var di = new DirectoryInfo(@"/data/output");
-            var fi = di.GetFiles();
-            logger.LogInformation($"Total files t be deleted: " +fi.Count());
-            foreach (FileInfo file in fi)
-            {
-                if (file.Exists)
-                {
-                    logger.LogInformation($"deleting file: " + file.Name);
-                    file.Delete();
-                }
-                else
-                {
-                    logger.LogInformation($"File not found: " + file.Name);
-                }
-            }
-            logger.LogInformation($"ProcessFileShare Ended");
+            var di = new DirectoryInfo(@"/data/output/BlobData");
+            //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv\BlobData");
+            di.Delete(true);
+            //logger.LogInformation($"Total files t be deleted: " +fi.Count());
+            //foreach (FileInfo file in fi)
+            //{
+            //    if (file.Exists)
+            //    {
+            //        logger.LogInformation($"deleting file: " + file.Name);
+            //        file.Delete();
+            //    }
+            //    else
+            //    {
+            //        logger.LogInformation($"File not found: " + file.Name);
+            //    }
+            //}
+            logger.LogInformation($"Directory Cleaning Ended");
             return true;
         }
     }
