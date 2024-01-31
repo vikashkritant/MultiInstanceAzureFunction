@@ -156,7 +156,7 @@ namespace MultiInstanceAzureFunction
                 }
                 watch.Stop();
                 long extractionTimeInMinutes = watch.ElapsedMilliseconds / 60000;
-                logger.LogInformation($"7Zip extraction completed and it took: " + extractionTimeInMinutes.ToString());
+                logger.LogInformation($"7Zip extraction completed and it took: {extractionTimeInMinutes} minutes");
             }
             else
             {
@@ -164,7 +164,7 @@ namespace MultiInstanceAzureFunction
             }
         }
 
-        private bool CleanDirectory()
+        public bool CleanDirectory()
         {
             var watch = new Stopwatch();
             
@@ -190,7 +190,7 @@ namespace MultiInstanceAzureFunction
                 outputDirectory.Delete();
                 watch.Stop();
                 long cleaningTimeInMinutes = watch.ElapsedMilliseconds / 60000;
-                logger.LogInformation($"Directory Cleaning Ended and it took: " + cleaningTimeInMinutes.ToString());
+                logger.LogInformation($"Directory Cleaning Ended and it took: {cleaningTimeInMinutes}");
             }
             else
             {
