@@ -12,6 +12,7 @@ using SharpCompress.Archives.SevenZip;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Files.Shares;
 using SharpCompress.Common;
+using System.Diagnostics;
 
 namespace MultiInstanceAzureFunction
 {
@@ -138,58 +139,63 @@ namespace MultiInstanceAzureFunction
                 Overwrite = true
             };
 
-            //if (result)
-            //{
-            //    logger.LogInformation($"ProcessFileShare Started");
-            //    var di = new DirectoryInfo(@"/data/input");
-            //    //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
-            //    var fi = di.GetFiles();
-            //    using (SevenZipArchive archive = SevenZipArchive.Open(fi))
-            //    {
-            //        var reader = archive.ExtractAllEntries();
-            //        reader.WriteAllToDirectory(@"/data/output", option);
-            //        //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
-            //    }
-            //}
-            //logger.LogInformation($"ProcessFileShare Ended");
+            logger.LogInformation($"ProcessFileShare Started");
+            if (result)
+            {
+                var watch = new Stopwatch();
+                watch.Start();
+
+                var di = new DirectoryInfo(@"/data/input");
+                //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
+                var fi = di.GetFiles();
+                using (SevenZipArchive archive = SevenZipArchive.Open(fi))
+                {
+                    var reader = archive.ExtractAllEntries();
+                    reader.WriteAllToDirectory(@"/data/output", option);
+                    //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
+                }
+                watch.Stop();
+                long extractionTimeInMinutes = watch.ElapsedMilliseconds / 60000;
+                logger.LogInformation($"7Zip extraction completed and it took: " + extractionTimeInMinutes.ToString());
+            }
+            else
+            {
+                logger.LogInformation($"ProcessFileShare Ended");
+            }
         }
 
         private bool CleanDirectory()
         {
+            var watch = new Stopwatch();
+            
             logger.LogInformation($"Directory Cleaning Started");
             var outputDirectory = new DirectoryInfo(@"/data/output/BlobData");
             //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv\BlobData");
             if (outputDirectory.Exists)
             {
+                watch.Start();
                 var di = outputDirectory.GetDirectories();
-                foreach(var directory in di)
+                foreach (var directory in di)
                 {
                     var fi = directory.GetFiles();
                     foreach (FileInfo file in fi)
                     {
                         if (file.Exists)
-                        {                            
+                        {
                             file.Delete();
                         }
                     }
                     directory.Delete();
                 }
                 outputDirectory.Delete();
+                watch.Stop();
+                long cleaningTimeInMinutes = watch.ElapsedMilliseconds / 60000;
+                logger.LogInformation($"Directory Cleaning Ended and it took: " + cleaningTimeInMinutes.ToString());
             }
-            //logger.LogInformation($"Total files t be deleted: " +fi.Count());
-            //foreach (FileInfo file in fi)
-            //{
-            //    if (file.Exists)
-            //    {
-            //        logger.LogInformation($"deleting file: " + file.Name);
-            //        file.Delete();
-            //    }
-            //    else
-            //    {
-            //        logger.LogInformation($"File not found: " + file.Name);
-            //    }
-            //}
-            logger.LogInformation($"Directory Cleaning Ended");
+            else
+            {
+                logger.LogInformation($"Directory Cleaning Ended");
+            }
             return true;
         }
     }
