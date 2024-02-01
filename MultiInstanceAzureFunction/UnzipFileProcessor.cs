@@ -145,14 +145,14 @@ namespace MultiInstanceAzureFunction
                 var watch = new Stopwatch();
                 watch.Start();
 
-                //var di = new DirectoryInfo(@"/data/input");
-                var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
+                var di = new DirectoryInfo(@"/data/input");
+                //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 var fi = di.GetFiles();
                 using (SevenZipArchive archive = SevenZipArchive.Open(fi))
                 {
                     var reader = archive.ExtractAllEntries();
-                    //reader.WriteAllToDirectory(@"/data/output", option);
-                    reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
+                    reader.WriteAllToDirectory(@"/data/output", option);
+                    //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
                 }
                 watch.Stop();
                 long extractionTimeInMinutes = watch.ElapsedMilliseconds / 60000;
