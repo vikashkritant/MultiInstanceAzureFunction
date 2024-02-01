@@ -131,7 +131,7 @@ namespace MultiInstanceAzureFunction
         }
 
         public void ProcessFileShare()
-        {            
+        {
             bool result = CleanDirectory();
             var option = new ExtractionOptions
             {
@@ -145,14 +145,14 @@ namespace MultiInstanceAzureFunction
                 var watch = new Stopwatch();
                 watch.Start();
 
-                var di = new DirectoryInfo(@"/data/input");
-                //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
+                //var di = new DirectoryInfo(@"/data/input");
+                var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 var fi = di.GetFiles();
                 using (SevenZipArchive archive = SevenZipArchive.Open(fi))
                 {
                     var reader = archive.ExtractAllEntries();
-                    reader.WriteAllToDirectory(@"/data/output", option);
-                    //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
+                    //reader.WriteAllToDirectory(@"/data/output", option);
+                    reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
                 }
                 watch.Stop();
                 long extractionTimeInMinutes = watch.ElapsedMilliseconds / 60000;
@@ -164,7 +164,7 @@ namespace MultiInstanceAzureFunction
             }
         }
 
-        public bool CleanDirectory()
+        private bool CleanDirectory()
         {
             var watch = new Stopwatch();
             
@@ -190,7 +190,7 @@ namespace MultiInstanceAzureFunction
                 outputDirectory.Delete();
                 watch.Stop();
                 long cleaningTimeInMinutes = watch.ElapsedMilliseconds / 60000;
-                logger.LogInformation($"Directory Cleaning Ended and it took: {cleaningTimeInMinutes}");
+                logger.LogInformation($"Directory Cleaning Ended and it took: {cleaningTimeInMinutes} minutes");
             }
             else
             {
