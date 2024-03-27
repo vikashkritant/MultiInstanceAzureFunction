@@ -164,7 +164,7 @@ namespace MultiInstanceAzureFunction
             }
         }
 
-        private bool CleanDirectory()
+        public bool CleanDirectory()
         {
             var watch = new Stopwatch();
             
