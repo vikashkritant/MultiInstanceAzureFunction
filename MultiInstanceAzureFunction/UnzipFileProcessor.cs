@@ -144,8 +144,12 @@ namespace MultiInstanceAzureFunction
             {
                 var watch = new Stopwatch();
                 watch.Start();
-
+                logger.LogInformation($"Checking input path...");
                 var di = new DirectoryInfo(@"/data/input");
+                if(!di.Exists)
+                {
+                    logger.LogInformation($"Input directory doesn't exist...");
+                }
                 //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 var fi = di.GetFiles();
                 using (SevenZipArchive archive = SevenZipArchive.Open(fi))
