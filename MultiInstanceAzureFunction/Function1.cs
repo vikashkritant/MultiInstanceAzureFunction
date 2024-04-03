@@ -32,7 +32,7 @@ namespace MultiInstanceAzureFunction
             }
             catch (Exception ex)
             {
-                log.LogError($"Error is:  {ex.Message}");
+                log.LogError($"Error is:  {ex.Message} and stacktrace is {ex.StackTrace}");
             }
 
         }
