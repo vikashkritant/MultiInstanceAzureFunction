@@ -139,6 +139,13 @@ namespace MultiInstanceAzureFunction
                 Overwrite = true
             };
 
+            var readerOption = new ReaderOptions
+            {
+                DisableCheckIncomplete = false,
+                LookForHeader = false
+            };
+
+
             logger.LogInformation($"ProcessFileShare Started");
             if (result)
             {
@@ -159,7 +166,7 @@ namespace MultiInstanceAzureFunction
                 var count = fi.Count();
                 logger.LogInformation($"Total file count is: {count}");
 
-                using (SevenZipArchive archive = SevenZipArchive.Open(fi))
+                using (SevenZipArchive archive = SevenZipArchive.Open(fi,readerOption))
                 {
                     var reader = archive.ExtractAllEntries();
                     reader.WriteAllToDirectory(@"/data/output", option);
