@@ -153,7 +153,8 @@ namespace MultiInstanceAzureFunction
                 watch.Start();
                 logger.LogInformation($"Checking input path...");
                 var di = new DirectoryInfo(@"/data/small-input");
-                if(!di.Exists)
+                //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
+                if (!di.Exists)
                 {
                     logger.LogInformation($"Input directory doesn't exist...");
                 }
@@ -161,11 +162,9 @@ namespace MultiInstanceAzureFunction
                 {
                     logger.LogInformation($"Input directory exist...");
                 }
-                //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
+                
                 var fi = di.GetFiles();
-                var count = fi.Count();
-                logger.LogInformation($"Total file count is: {count}");
-
+                
                 using (SevenZipArchive archive = SevenZipArchive.Open(fi))
                 {
                     var reader = archive.ExtractAllEntries();
@@ -192,19 +191,16 @@ namespace MultiInstanceAzureFunction
             if (outputDirectory.Exists)
             {
                 watch.Start();
-                var di = outputDirectory.GetDirectories();
-                foreach (var directory in di)
+
+                var fi = outputDirectory.GetFiles();
+                foreach (FileInfo file in fi)
                 {
-                    var fi = directory.GetFiles();
-                    foreach (FileInfo file in fi)
+                    if (file.Exists)
                     {
-                        if (file.Exists)
-                        {
-                            file.Delete();
-                        }
+                        file.Delete();
                     }
-                    directory.Delete();
                 }
+
                 outputDirectory.Delete();
                 watch.Stop();
                 long cleaningTimeInMinutes = watch.ElapsedMilliseconds / 60000;
