@@ -150,6 +150,10 @@ namespace MultiInstanceAzureFunction
                 {
                     logger.LogInformation($"Input directory doesn't exist...");
                 }
+                else
+                {
+                    logger.LogInformation($"Input directory exist...");
+                }
                 //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 var fi = di.GetFiles();
                 using (SevenZipArchive archive = SevenZipArchive.Open(fi))
