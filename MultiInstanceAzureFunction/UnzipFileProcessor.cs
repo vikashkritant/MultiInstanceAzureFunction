@@ -152,7 +152,7 @@ namespace MultiInstanceAzureFunction
                 var watch = new Stopwatch();
                 watch.Start();
                 logger.LogInformation($"Checking input path...");
-                var di = new DirectoryInfo(@"/data/input");
+                var di = new DirectoryInfo(@"/data/small-input");
                 if(!di.Exists)
                 {
                     logger.LogInformation($"Input directory doesn't exist...");
@@ -166,7 +166,7 @@ namespace MultiInstanceAzureFunction
                 var count = fi.Count();
                 logger.LogInformation($"Total file count is: {count}");
 
-                using (SevenZipArchive archive = SevenZipArchive.Open(fi,readerOption))
+                using (SevenZipArchive archive = SevenZipArchive.Open(fi))
                 {
                     var reader = archive.ExtractAllEntries();
                     reader.WriteAllToDirectory(@"/data/output", option);
