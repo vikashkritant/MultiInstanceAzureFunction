@@ -156,6 +156,9 @@ namespace MultiInstanceAzureFunction
                 }
                 //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 var fi = di.GetFiles();
+                var count = fi.Count();
+                logger.LogInformation($"Total file count is: {count}");
+
                 using (SevenZipArchive archive = SevenZipArchive.Open(fi))
                 {
                     var reader = archive.ExtractAllEntries();
