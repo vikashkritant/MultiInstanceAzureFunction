@@ -132,7 +132,7 @@ namespace MultiInstanceAzureFunction
 
         public void ProcessFileShare()
         {
-            bool result = CleanDirectory();
+            bool result = true;//CleanDirectory();
             var option = new ExtractionOptions
             {
                 ExtractFullPath = true,
