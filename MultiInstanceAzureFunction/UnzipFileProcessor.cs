@@ -152,7 +152,7 @@ namespace MultiInstanceAzureFunction
                 var watch = new Stopwatch();
                 watch.Start();
                 logger.LogInformation($"Checking input path...");
-                var di = new DirectoryInfo(@"/data/small-input");
+                var di = new DirectoryInfo(@"/data/input");
                 //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 if (!di.Exists)
                 {
@@ -170,6 +170,15 @@ namespace MultiInstanceAzureFunction
                     var reader = archive.ExtractAllEntries();
                     reader.WriteAllToDirectory(@"/data/output", option);
                     //reader.WriteAllToDirectory(@"D:\R&D\Azure\ConsoleApps\MessageSender\vvv", option);
+                    //reader.WriteAllToDirectory(@"D:\Archive\Input", option);
+                    //while (reader.MoveToNextEntry())
+                    //{
+                    //    if (!reader.Entry.IsDirectory)
+                    //    {
+                    //        var entry = reader.Entry;
+                    //        Console.WriteLine($"file name: {entry.Key}");
+                    //    }
+                    //}
                 }
                 watch.Stop();
                 long extractionTimeInMinutes = watch.ElapsedMilliseconds / 60000;
