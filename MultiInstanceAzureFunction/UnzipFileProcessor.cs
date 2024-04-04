@@ -139,13 +139,6 @@ namespace MultiInstanceAzureFunction
                 Overwrite = true
             };
 
-            var readerOption = new ReaderOptions
-            {
-                DisableCheckIncomplete = false,
-                LookForHeader = false
-            };
-
-
             logger.LogInformation($"ProcessFileShare Started");
             if (result)
             {
