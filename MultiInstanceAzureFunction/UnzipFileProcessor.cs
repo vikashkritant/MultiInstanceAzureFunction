@@ -191,7 +191,7 @@ namespace MultiInstanceAzureFunction
             var info = new ProcessStartInfo
             {
                 FileName = $"/exportdata/input/7zz",
-                Arguments = $"x {filePath} -o{extractPath}",
+                Arguments = $"x {filePath} -aos -o{extractPath}",
                 RedirectStandardOutput = true,
                 RedirectStandardError=true,
                 UseShellExecute=false,
