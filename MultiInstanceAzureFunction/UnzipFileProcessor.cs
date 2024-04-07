@@ -182,6 +182,35 @@ namespace MultiInstanceAzureFunction
                 logger.LogInformation($"ProcessFileShare Ended");
             }
         }
+        public void ProcessFileShareWith7Z()
+        {
+            logger.LogInformation($"ProcessFileShare Started");
+            var watch = new Stopwatch();
+            var info = new ProcessStartInfo
+            {
+                FileName = $"/exportdata/input/7zz",
+                Arguments = $"x BlobData.7z",
+                RedirectStandardOutput = true,
+                RedirectStandardError=true,
+                UseShellExecute=false,
+                CreateNoWindow=true
+            };
+
+            using(var process = Process.Start(info))
+            {
+                process.WaitForExit();
+                if(process.ExitCode!=0)
+                {
+                    var error = process.StandardError.ReadToEnd();
+                    logger.LogInformation($"Error in 7zip extractin in shell script: {error}");
+                }
+            }
+
+            watch.Stop();
+            long extractionTimeInMinutes = watch.ElapsedMilliseconds / 60000;
+            logger.LogInformation($"7Zip extraction completed and it took: {extractionTimeInMinutes} minutes");
+
+        }
 
         public bool CleanDirectory()
         {
