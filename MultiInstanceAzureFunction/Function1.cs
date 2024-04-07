@@ -28,7 +28,7 @@ namespace MultiInstanceAzureFunction
                 //az webapp config storage-account add--resource - group vikashrg--name MultiInstanceAzureFunction --custom - id myfileshareid--storage - type AzureFiles--share - name myfileshare--account - name vikashrg8582--mount - path / vikash - files--access - key jzyAF9ufbN4TyM6nVbXXI4XoXZiFJklKXl82VFeHI2riAgBuVQCVkg2I / zIh7bQxpL44LUY2uvFb + AStsom9pA ==
                 //echo "Mounting drive done"
                 UnZipFileProcessor unzipper = new UnZipFileProcessor(log);
-                unzipper.ProcessFileShare();
+                unzipper.ProcessFileShareWith7Z();
             }
             catch (Exception ex)
             {
