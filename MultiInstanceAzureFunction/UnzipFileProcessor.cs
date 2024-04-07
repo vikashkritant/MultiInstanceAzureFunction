@@ -186,10 +186,11 @@ namespace MultiInstanceAzureFunction
         {
             logger.LogInformation($"ProcessFileShare Started");
             var watch = new Stopwatch();
+            var filePath = $"/exportdata/input/BlobData.7z";
             var info = new ProcessStartInfo
             {
                 FileName = $"/exportdata/input/7zz",
-                Arguments = $"x BlobData.7z",
+                Arguments = $"x {filePath}",
                 RedirectStandardOutput = true,
                 RedirectStandardError=true,
                 UseShellExecute=false,
