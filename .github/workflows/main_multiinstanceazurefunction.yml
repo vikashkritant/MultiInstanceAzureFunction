@@ -39,4 +39,4 @@ jobs:
           app-name: 'MultiInstanceAzureFunction'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_591F11F9FE74451DB2A41C26571E9001 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_748E177831AB4ED0BE1C4FE2EA1CC437 }}
