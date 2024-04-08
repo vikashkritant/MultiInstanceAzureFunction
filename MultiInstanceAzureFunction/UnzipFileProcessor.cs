@@ -145,8 +145,8 @@ namespace MultiInstanceAzureFunction
                 var watch = new Stopwatch();
                 watch.Start();
                 logger.LogInformation($"Checking input path...");
-                var di = new DirectoryInfo(@"/data/input");
-                //var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
+                //var di = new DirectoryInfo(@"/data/input");
+                var di = new DirectoryInfo(@"D:\R&D\Azure\ConsoleApps\MessageSender\ZipFiles");
                 if (!di.Exists)
                 {
                     logger.LogInformation($"Input directory doesn't exist...");
@@ -182,36 +182,60 @@ namespace MultiInstanceAzureFunction
                 logger.LogInformation($"ProcessFileShare Ended");
             }
         }
-        public void ProcessFileShareWith7Z()
+        public async void ProcessFileShareWith7Z()
         {
             logger.LogInformation($"ProcessFileShare Started");
             var watch = new Stopwatch();
+            watch.Start();
+            //var filePath = $"D:\\Archive\\Input\\BlobData.7z";
+            //var extractPath = $"D:\\Archive\\Output";
+
             var filePath = $"/exportdata/input/BlobData.7z";
             var extractPath = $"/exportdata/input/";
-            var info = new ProcessStartInfo
-            {
-                FileName = $"/exportdata/input/7zz",
-                Arguments = $"x {filePath} -aos -o{extractPath}",
-                RedirectStandardOutput = true,
-                RedirectStandardError=true,
-                UseShellExecute=false,
-                CreateNoWindow=true
-            };
 
-            using(var process = Process.Start(info))
-            {
-                process.WaitForExit();
-                if(process.ExitCode!=0)
-                {
-                    var error = process.StandardError.ReadToEnd();
-                    logger.LogInformation($"Error in 7zip extractin in shell script: {error}");
-                }
-            }
+            var Tasks = new List<Task>();
+            var task1 = ExtractFiles(filePath, extractPath, "*.pdf -r");
+            var task2 = ExtractFiles(filePath, extractPath, "*.txt -r");
+            var task3 = ExtractFiles(filePath, extractPath, "*.htm -r");
+
+            Tasks.Add(task2);
+            Tasks.Add(task3);
+
+            await Task.WhenAll(task1, task2, task3);           
+
 
             watch.Stop();
             long extractionTimeInMinutes = watch.ElapsedMilliseconds / 60000;
             logger.LogInformation($"7Zip extraction completed and it took: {extractionTimeInMinutes} minutes");
+            //Console.WriteLine($"7Zip extraction completed and it took: {extractionTimeInMinutes} minutes");
 
+        }
+
+        private async Task<bool> ExtractFiles(string filePath, string extractPath, string fileExtension)
+        {
+            var info = new ProcessStartInfo
+            {
+                FileName = $"/exportdata/input/7zz",
+                //FileName = $"C:\\Program Files\\7-Zip\\7z.exe",
+                Arguments = $"x {filePath} -aos -o{extractPath} {fileExtension}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (var process = Process.Start(info))
+            {
+                process.WaitForExit();
+                if (process.ExitCode != 0)
+                {
+                    var error = process.StandardError.ReadToEnd();
+                    logger.LogInformation($"Error in 7zip extractin in shell script: {error}");
+                    return await Task.FromResult(false);
+                }
+            }
+           
+            return await Task.FromResult(true);
         }
 
         public bool CleanDirectory()
