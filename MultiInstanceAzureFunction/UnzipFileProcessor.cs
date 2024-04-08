@@ -182,7 +182,7 @@ namespace MultiInstanceAzureFunction
                 logger.LogInformation($"ProcessFileShare Ended");
             }
         }
-        public async void ProcessFileShareWith7Z()
+        public void ProcessFileShareWith7Z()
         {
             logger.LogInformation($"ProcessFileShare Started");
             var watch = new Stopwatch();
@@ -191,18 +191,20 @@ namespace MultiInstanceAzureFunction
             //var extractPath = $"D:\\Archive\\Output";
 
             var filePath = $"/exportdata/input/BlobData.7z";
+            //var extractPath = $"/exportdata/input/";
             var extractPath = $"/exportdata/input/";
 
-            var Tasks = new List<Task>();
-            var task1 = ExtractFiles(filePath, extractPath, "*.pdf -r");
-            var task2 = ExtractFiles(filePath, extractPath, "*.txt -r");
-            var task3 = ExtractFiles(filePath, extractPath, "*.htm -r");
+            //var Tasks = new List<Task>();
+            //var task1 = ExtractFiles(filePath, extractPath, "*.pdf -r");
+            //var task2 = ExtractFiles(filePath, extractPath, "*.txt -r");
+            //var task3 = ExtractFiles(filePath, extractPath, "*.htm -r");
 
-            Tasks.Add(task2);
-            Tasks.Add(task3);
+            //Tasks.Add(task1);
+            //Tasks.Add(task2);
+            //Tasks.Add(task3);
 
-            await Task.WhenAll(task1, task2, task3);           
-
+            //await Task.WhenAll(Tasks);           
+            ExtractFiles(filePath, extractPath, "*.pdf -r");
 
             watch.Stop();
             long extractionTimeInMinutes = watch.ElapsedMilliseconds / 60000;
@@ -211,13 +213,14 @@ namespace MultiInstanceAzureFunction
 
         }
 
-        private async Task<bool> ExtractFiles(string filePath, string extractPath, string fileExtension)
+        private bool ExtractFiles(string filePath, string extractPath, string fileExtension)
         {
             var info = new ProcessStartInfo
             {
                 FileName = $"/exportdata/input/7zz",
                 //FileName = $"C:\\Program Files\\7-Zip\\7z.exe",
-                Arguments = $"x {filePath} -aos -o{extractPath} {fileExtension}",
+                //Arguments = $"x {filePath} -aos -o{extractPath} {fileExtension}",
+                Arguments = $"x {filePath} -aos -o/tmp",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -231,11 +234,11 @@ namespace MultiInstanceAzureFunction
                 {
                     var error = process.StandardError.ReadToEnd();
                     logger.LogInformation($"Error in 7zip extractin in shell script: {error}");
-                    return await Task.FromResult(false);
+                    return false;// await Task.FromResult(false);
                 }
             }
-           
-            return await Task.FromResult(true);
+
+            return true;// await Task.FromResult(true);
         }
 
         public bool CleanDirectory()
