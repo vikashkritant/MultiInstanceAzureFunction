@@ -237,7 +237,6 @@ namespace MultiInstanceAzureFunction
                     return false;// await Task.FromResult(false);
                 }
             }
-
             return true;// await Task.FromResult(true);
         }
 
