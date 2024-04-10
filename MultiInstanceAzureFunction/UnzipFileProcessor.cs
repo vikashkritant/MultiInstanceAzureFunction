@@ -220,7 +220,7 @@ namespace MultiInstanceAzureFunction
                 FileName = $"/exportdata/input/7zz",
                 //FileName = $"C:\\Program Files\\7-Zip\\7z.exe",
                 //Arguments = $"x {filePath} -aos -o{extractPath} {fileExtension}",
-                Arguments = $"x {filePath} -aos -o/tmp",
+                Arguments = $"x {filePath} -aos -o{extractPath}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
