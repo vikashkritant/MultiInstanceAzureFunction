@@ -203,7 +203,8 @@ namespace MultiInstanceAzureFunction
             //Tasks.Add(task2);
             //Tasks.Add(task3);
 
-            //await Task.WhenAll(Tasks);           
+            //await Task.WhenAll(Tasks);  
+            
             ExtractFiles(filePath, extractPath, "*.pdf -r");
 
             watch.Stop();
